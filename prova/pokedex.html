@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokédex</title>
+  <link rel="stylesheet" href="pokedex.css" />
+  <style>
+    /* Estilos básicos de exemplo. Remova se você já tem um CSS separado */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f00;
+      font-family: sans-serif;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #ffcb05;
+      border: 2px solid #3b4cca;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: capitalize;
+    }
+
+    button:hover {
+      background-color: #3b4cca;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="pokedex">
+    <div id="left">
+      <div id="logo"></div>
+      <div id="bg_curve1_left"></div>
+      <div id="bg_curve2_left"></div>
+      <div id="curve1_left">
+        <div id="buttonGlass">
+          <div id="reflect"></div>
+        </div>
+        <div id="miniButtonGlass1"></div>
+        <div id="miniButtonGlass2"></div>
+        <div id="miniButtonGlass3"></div>
+      </div>
+      <div id="curve2_left">
+        <div id="junction">
+          <div id="junction1"></div>
+          <div id="junction2"></div>
+        </div>
+      </div>
+      <div id="screen">
+        <div id="topPicture">
+          <div id="buttontopPicture1"></div>
+          <div id="buttontopPicture2"></div>
+        </div>
+        <div id="picture">
+          <img id="pokemonImage" tittle="Clique para ver imagem do pokemon" height="170">
+        </div>
+        <div id="buttonbottomPicture"></div>
+        <div id="speakers">
+          <div class="sp"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+        </div>
+      </div>
+      <div id="bigbluebutton"></div>
+      <div id="barbutton1"></div>
+      <div id="barbutton2"></div>
+      <div id="cross">
+        <div id="leftcross">
+          <div id="leftT"></div>
+        </div>
+        <div id="topcross">
+          <div id="upT"></div>
+        </div>
+        <div id="rightcross">
+          <div id="rightT"></div>
+        </div>
+        <div id="midcross">
+          <div id="midCircle"></div>
+        </div>
+        <div id="botcross">
+          <div id="downT"></div>
+        </div>
+      </div>
+    </div>
+    <div id="right">
+      <div id="stats">
+        <strong>Name:</strong> <span id="pokemon-container" ></span><br />
+      </div>
+      <div id="blueButtons1">
+       <div class="buttons">
+  <button onclick="fetchPokemon('pikachu')">Pikachu</button>
+  <button onclick="fetchPokemon('charmander')">Charmander</button>
+  <button onclick="fetchPokemon('bulbasaur')">Bulbasaur</button>
+  <button onclick="fetchPokemon('squirtle')">Squirtle</button>
+  <button onclick="fetchPokemon('jigglypuff')">Jigglypuff</button>
+  <button onclick="fetchPokemon('gengar')">Gengar</button>
+  <button onclick="fetchPokemon('snorlax')">Snorlax</button>
+  <button onclick="fetchPokemon('eevee')">Eevee</button>
+  <button onclick="fetchPokemon('lucario')">Lucario</button>
+  <button onclick="fetchPokemon('mewtwo')">Mewtwo</button>
+</div>
+
+
+<script>
+  async function fetchPokemon(name) {
+    const container = document.getElementById("pokemon-container");
+    const image = document.getElementById("pokemonImage");
+    container.innerHTML = "Carregando...";
+
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
+      const data = await res.json();
+
+      container.innerHTML = `
+        <h2>${data.name.toUpperCase()}</h2>
+      `;
+
+      image.src = data.sprites.front_default 
+      image.alt =`imagem de ${data.nome}`
+
+    } catch (error) {
+      container.innerHTML = "Pokémon não encontrado.";
+    }
+  }
+</script>
