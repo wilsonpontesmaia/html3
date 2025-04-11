@@ -6,36 +6,33 @@
   <title>Pokédex</title>
   <link rel="stylesheet" href="pokedex.css" />
   <style>
-    /* Estilos básicos de exemplo. Remova se você já tem um CSS separado */
     body {
       margin: 0;
       padding: 0;
       background-color: #f00;
       font-family: sans-serif;
     }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
     button {
-      background-color: #ffcb05;
-      border: 2px solid #3b4cca;
-      border-radius: 12px;
+      background: linear-gradient(145deg, #d4fce6, #b2f1d6);
+      border: 2px solid #76d9b0;
+      border-radius: 16px;
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease-in-out;
       text-transform: capitalize;
-    }
+      box-shadow: 2px 2px 6px rgba(118, 217, 176, 0.4);
+      font-weight: bold;
+      color: #246b53;
+}
 
     button:hover {
-      background-color: #3b4cca;
+      background: linear-gradient(145deg, #b2f1d6, #a0eacb);
       color: white;
+      border-color: #50cfa1;
+      transform: scale(1.05);
     }
+
   </style>
 </head>
 <body>
@@ -64,7 +61,7 @@
           <div id="buttontopPicture2"></div>
         </div>
         <div id="picture">
-          <img id="pokemonImage" tittle="Clique para ver imagem do pokemon" height="170">
+          <img id="pokemonImage" title="Clique para ver imagem do pokemon" height="170">
         </div>
         <div id="buttonbottomPicture"></div>
         <div id="speakers">
@@ -97,42 +94,62 @@
     </div>
     <div id="right">
       <div id="stats">
-        <strong>Name:</strong> <span id="pokemon-container" ></span><br />
+        <strong>Name:</strong> <span id="pokemon-container"></span><br />
       </div>
       <div id="blueButtons1">
-       <div class="buttons">
-  <button onclick="fetchPokemon('pikachu')">Pikachu</button>
-  <button onclick="fetchPokemon('charmander')">Charmander</button>
-  <button onclick="fetchPokemon('bulbasaur')">Bulbasaur</button>
-  <button onclick="fetchPokemon('squirtle')">Squirtle</button>
-  <button onclick="fetchPokemon('jigglypuff')">Jigglypuff</button>
-  <button onclick="fetchPokemon('gengar')">Gengar</button>
-  <button onclick="fetchPokemon('snorlax')">Snorlax</button>
-  <button onclick="fetchPokemon('eevee')">Eevee</button>
-  <button onclick="fetchPokemon('lucario')">Lucario</button>
-  <button onclick="fetchPokemon('mewtwo')">Mewtwo</button>
-</div>
+        <button onclick="fetchPokemon('pikachu')">Pikachu</button>
+        <button onclick="fetchPokemon('bulbasaur')">Bulbasaur</button>
+        <button onclick="fetchPokemon('charmander')">Charmander</button>
+        <button onclick="fetchPokemon('squirtle')">Squirtle</button>
+        <button onclick="fetchPokemon('jigglypuff')">Jigglypuff</button>
+        <button onclick="fetchPokemon('gengar')">Gengar</button>
+        <button onclick="fetchPokemon('snorlax')">Snorlax</button>
+        <button onclick="fetchPokemon('eevee')">Eevee</button>
+        <button onclick="fetchPokemon('lucario')">Lucario</button>
+        <button onclick="fetchPokemon('mewtwo')">Mewtwo</button>
+      </div>
+
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Digite o nome do Pokémon..." />
+        <button onclick="searchPokemon()">Buscar</button>
+      </div>
+    </div>
 
 
-<script>
-  async function fetchPokemon(name) {
-    const container = document.getElementById("pokemon-container");
-    const image = document.getElementById("pokemonImage");
-    container.innerHTML = "Carregando...";
+  <script>
+    async function fetchPokemon(name) {
+      const image = document.getElementById("pokemonImage");
+      const nameDisplay = document.getElementById("pokemon-container");
 
-    try {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
-      const data = await res.json();
+      image.src = "";
+      nameDisplay.textContent = "Carregando...";
 
-      container.innerHTML = `
-        <h2>${data.name.toUpperCase()}</h2>
-      `;
+      try {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
+        const data = await res.json();
 
-      image.src = data.sprites.front_default 
-      image.alt =`imagem de ${data.nome}`
-
-    } catch (error) {
-      container.innerHTML = "Pokémon não encontrado.";
+        image.src = data.sprites.front_default;
+        image.alt = data.name;
+        image.title = data.name.toUpperCase();
+        nameDisplay.textContent = data.name.toUpperCase();
+      } catch (error) {
+        image.src = "";
+        nameDisplay.textContent = "Pokémon não encontrado.";
+      }
     }
-  }
-</script>
+
+    function searchPokemon() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (input) {
+        fetchPokemon(input);
+      } else {
+        alert("Digite um nome válido de Pokémon!");
+      }
+    }
+
+    document.getElementById("searchInput").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        searchPokemon();
+      }
+    });
+  </script>
